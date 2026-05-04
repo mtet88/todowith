@@ -8,8 +8,12 @@ function now() {
 }
 
 function createId() {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
-    return crypto.randomUUID();
+  try {
+    if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+      return crypto.randomUUID();
+    }
+  } catch {
+    // Some mobile browsers restrict crypto APIs on non-secure local-network origins.
   }
 
   return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -36,7 +40,12 @@ export function getLocalIdeas(): Idea[] {
 
 export function saveLocalIdeas(ideas: Idea[]) {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(ideas));
-  window.dispatchEvent(new Event("ideas:changed"));
+
+  try {
+    window.dispatchEvent(new Event("ideas:changed"));
+  } catch {
+    window.dispatchEvent(new CustomEvent("ideas:changed"));
+  }
 }
 
 export function createLocalIdea(input: IdeaInput): Idea {

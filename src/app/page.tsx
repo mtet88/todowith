@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
 import { CategoryBadge } from "@/components/Badges";
 import { getSuggestions } from "@/lib/ideas/scoring";
-import type { IdeaCategory } from "@/lib/ideas/types";
+import type { Idea, IdeaCategory } from "@/lib/ideas/types";
 import { useLocalIdeas } from "@/hooks/useLocalIdeas";
 
 const visualStyles: Record<IdeaCategory, { background: string; accent: string; icon: string; label: string }> = {
@@ -43,11 +44,68 @@ const visualStyles: Record<IdeaCategory, { background: string; accent: string; i
 
 const whenOptions = ["Hoy", "Manana", "Fin de semana", "Fecha"];
 
-export default function Home() {
+const demoIdeas: Idea[] = [
+  {
+    id: "demo-picnic",
+    rawText: "Picnic en el parque cuando haga buen clima",
+    title: "Picnic en el parque",
+    category: "plans",
+    status: "pending",
+    discardedReason: null,
+    dateType: "flexible",
+    idealConditions: ["good_weather", "outdoor", "day"],
+    createdAt: "2026-03-01T10:00:00.000Z",
+    updatedAt: "2026-03-01T10:00:00.000Z",
+    groupId: null,
+  },
+  {
+    id: "demo-brunch",
+    rawText: "Brunch en una cafeteria nueva el domingo",
+    title: "Brunch en una cafeteria nueva",
+    category: "food",
+    status: "pending",
+    discardedReason: null,
+    dateType: "flexible",
+    idealConditions: ["day", "weekend"],
+    createdAt: "2026-03-10T10:00:00.000Z",
+    updatedAt: "2026-03-10T10:00:00.000Z",
+    groupId: null,
+  },
+  {
+    id: "demo-expo",
+    rawText: "Museo o exhibicion este finde si llueve",
+    title: "Museo o exhibicion este finde",
+    category: "events",
+    status: "pending",
+    discardedReason: null,
+    dateType: "flexible",
+    idealConditions: ["indoor", "weekend"],
+    createdAt: "2026-03-15T10:00:00.000Z",
+    updatedAt: "2026-03-15T10:00:00.000Z",
+    groupId: null,
+  },
+];
+
+function LoadingPlans() {
+  return (
+    <div className="grid place-items-center gap-4 text-center">
+      <div className="size-20 animate-spin rounded-full border-[6px] border-emerald-100 border-r-emerald-600 border-t-emerald-600" aria-hidden="true" />
+      <div>
+        <p className="text-xl font-black text-slate-950">Buscando planes para ti</p>
+        <p className="mt-2 max-w-xs text-sm leading-6 text-slate-500">Estamos encontrando las mejores ideas para tu dia.</p>
+      </div>
+    </div>
+  );
+}
+
+function HomeContent() {
+  const searchParams = useSearchParams();
   const [selectedWhen, setSelectedWhen] = useState(whenOptions[0]);
   const [whenOpen, setWhenOpen] = useState(false);
   const { ideas, loaded } = useLocalIdeas();
-  const suggestions = getSuggestions(ideas);
+  const showDemo = searchParams.get("demo") === "1";
+  const activeIdeas = loaded && showDemo && ideas.length === 0 ? demoIdeas : ideas;
+  const suggestions = getSuggestions(activeIdeas);
 
   return (
     <AppShell>
@@ -90,16 +148,10 @@ export default function Home() {
 
         <div className="flex flex-1 flex-col justify-center pb-12">
           {!loaded ? (
-            <div className="grid place-items-center gap-4 text-center">
-              <div className="size-20 animate-spin rounded-full border-[6px] border-emerald-100 border-r-emerald-600 border-t-emerald-600" aria-hidden="true" />
-              <div>
-                <p className="text-xl font-black text-slate-950">Buscando planes para ti</p>
-                <p className="mt-2 max-w-xs text-sm leading-6 text-slate-500">Estamos encontrando las mejores ideas para tu dia.</p>
-              </div>
-            </div>
+            <LoadingPlans />
           ) : null}
 
-          {loaded && ideas.length === 0 ? (
+          {loaded && ideas.length === 0 && !showDemo ? (
             <div className="flex min-h-[30rem] flex-col items-center justify-center text-center">
               <div className="grid size-24 place-items-center rounded-full bg-white/80 shadow-xl shadow-sky-900/10 ring-1 ring-slate-200/70">
                 <svg className="size-11 text-emerald-600" fill="none" viewBox="0 0 24 24" aria-hidden="true">
@@ -111,7 +163,7 @@ export default function Home() {
             </div>
           ) : null}
 
-          {loaded && ideas.length > 0 && suggestions.length === 0 ? (
+          {loaded && activeIdeas.length > 0 && suggestions.length === 0 ? (
             <div className="mx-auto max-w-sm text-center">
               <p className="text-2xl font-black leading-tight text-slate-950">No hay planes listos para este momento</p>
               <p className="mt-3 text-sm leading-6 text-slate-500">Prueba otro momento o guarda una nueva idea.</p>
@@ -123,6 +175,7 @@ export default function Home() {
               <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 md:mx-0 md:px-0">
                 {suggestions.map(({ idea, reasons }) => {
                   const visual = visualStyles[idea.category];
+                  const isDemo = idea.id.startsWith("demo-");
 
                   return (
                     <article className="min-w-[82%] snap-center overflow-hidden rounded-[2rem] bg-white/95 shadow-xl shadow-sky-900/10 ring-1 ring-slate-200/70 backdrop-blur sm:min-w-[21rem]" key={idea.id}>
@@ -152,8 +205,8 @@ export default function Home() {
                           >
                             Compartir
                           </a>
-                          <Link className="rounded-full bg-slate-100 px-4 py-2 text-sm font-bold text-slate-700" href={`/ideas/${idea.id}`}>
-                            Ver detalle
+                          <Link className="rounded-full bg-slate-100 px-4 py-2 text-sm font-bold text-slate-700" href={isDemo ? "/save" : `/ideas/${idea.id}`}>
+                            {isDemo ? "Guardar similar" : "Ver detalle"}
                           </Link>
                         </div>
                       </div>
@@ -169,5 +222,23 @@ export default function Home() {
         </div>
       </section>
     </AppShell>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense
+      fallback={
+        <AppShell>
+          <section className="mx-auto flex min-h-[calc(100dvh-11rem)] max-w-3xl flex-col">
+            <div className="flex flex-1 flex-col justify-center pb-12">
+              <LoadingPlans />
+            </div>
+          </section>
+        </AppShell>
+      }
+    >
+      <HomeContent />
+    </Suspense>
   );
 }

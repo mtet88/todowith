@@ -11,9 +11,29 @@ export default function SaveIdeaPage() {
   const [rawText, setRawText] = useState("");
   const [link, setLink] = useState("");
   const [error, setError] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  function normalizeOptionalLink(value: string) {
+    const trimmed = value.trim();
+
+    if (!trimmed) {
+      return undefined;
+    }
+
+    if (/^https?:\/\//i.test(trimmed)) {
+      return trimmed;
+    }
+
+    return `https://${trimmed}`;
+  }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (saving) {
+      return;
+    }
+
     const text = rawText.trim();
 
     if (!text) {
@@ -21,8 +41,17 @@ export default function SaveIdeaPage() {
       return;
     }
 
-    const idea = addLocalIdea({ rawText: text, link });
-    router.push(`/ideas/${idea.id}`);
+    setError("");
+    setSaving(true);
+
+    try {
+      const idea = addLocalIdea({ rawText: text, link: normalizeOptionalLink(link) });
+      router.push(`/ideas/${idea.id}`);
+    } catch (cause) {
+      console.error(cause);
+      setError("No pude guardar la idea en este navegador. Prueba recargar e intentarlo otra vez.");
+      setSaving(false);
+    }
   }
 
   return (
@@ -54,13 +83,14 @@ export default function SaveIdeaPage() {
                 className="rounded-full border border-stone-200 bg-stone-50 px-4 py-3 outline-none ring-amber-300 transition focus:ring-4"
                 onChange={(event) => setLink(event.target.value)}
                 placeholder="https://..."
-                type="url"
+                inputMode="url"
+                type="text"
                 value={link}
               />
             </label>
             {error ? <p className="text-sm font-semibold text-red-600">{error}</p> : null}
-            <button className="rounded-full bg-stone-950 px-5 py-4 font-black text-white" type="submit">
-              Guardar idea
+            <button className="rounded-full bg-stone-950 px-5 py-4 font-black text-white disabled:cursor-not-allowed disabled:opacity-60" disabled={saving} type="submit">
+              {saving ? "Guardando..." : "Guardar idea"}
             </button>
           </form>
         </div>
