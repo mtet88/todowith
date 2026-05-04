@@ -43,6 +43,8 @@ Puede ocultarse en Detalle de idea, Guardar idea y Compartir.
 Debe estar optimizado para uso con una mano.
 ```
 
+En `Guardar idea` y detalle de idea se ocultan tanto la bottom nav como el FAB para mantener el foco.
+
 ## Navegacion Desktop
 
 Desktop puede usar sidebar o top navigation.
@@ -85,7 +87,23 @@ Ayudar al usuario a decidir que hacer en una fecha o momento especifico.
 └─────────────────────────────┘
 ```
 
-Cuando hay sugerencias, el area central reemplaza el estado de carga por un carrusel horizontal de tarjetas visuales.
+Cuando hay sugerencias, el area central reemplaza el estado de carga por un carrusel horizontal de tarjetas visuales. Cada tarjeta es tappable completa; el detalle se abre al tocar cualquier zona que no sea la accion de compartir.
+
+### Tarjeta de Sugerencia
+
+```txt
+┌─────────────────────────────┐
+│ [Categoria]            [↥]  │
+│                             │
+│       visual/foto           │
+│                             │
+├─────────────────────────────┤
+│ Picnic en el parque         │
+│ Razon de recomendacion      │
+└─────────────────────────────┘
+```
+
+La categoria usa un badge claro/palido sobre la imagen. El boton superior derecho usa icono de compartir y no navega al detalle.
 
 ### Desktop Layout
 
@@ -146,7 +164,7 @@ FAB global: +
 ```txt
 Seleccionar fecha
 Compartir sugerencia
-Ver detalle
+Abrir detalle tocando la tarjeta
 Guardar nueva idea
 ```
 
@@ -255,13 +273,13 @@ Revisar y mantener la biblioteca de ideas.
 │ │ Restaurante coreano     │ │
 │ │ Comida · Pendiente      │ │
 │ │ Sin fecha               │ │
-│ │ [Ver] [Compartir]       │ │
+│ │ [Borrar]                │ │
 │ └─────────────────────────┘ │
 │ ┌─────────────────────────┐ │
 │ │ Exhibicion foto         │ │
 │ │ Eventos · Pendiente     │ │
 │ │ Termina el 30 ago       │ │
-│ │ [Ver] [Descartar]       │ │
+│ │ [Borrar]                │ │
 │ └─────────────────────────┘ │
 ├─────────────────────────────┤
 │ Tabs: Que hacemos Ideas Cta │
@@ -283,9 +301,8 @@ Guarda algo que quieras hacer despues.
 ```txt
 Filtrar por estado
 Filtrar por categoria
-Abrir detalle
-Compartir
-Descartar
+Abrir detalle tocando la tarjeta
+Borrar idea
 Guardar nueva idea
 ```
 

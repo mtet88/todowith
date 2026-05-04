@@ -60,7 +60,7 @@ Ideas
 Cuenta
 ```
 
-En mobile, `Que hacemos?`, `Ideas` y `Cuenta` viven en una bottom nav tipo pastilla flotante. `Guardar idea` vive como accion global `+` flotante.
+En mobile, `Que hacemos?`, `Ideas` y `Cuenta` viven en una bottom nav tipo pastilla flotante. `Guardar idea` vive como accion global `+` flotante. La bottom nav y el `+` se ocultan en flujos enfocados como `Guardar idea` y detalle de idea.
 
 En desktop, pueden vivir en sidebar o top navigation.
 
@@ -124,13 +124,15 @@ Cada sugerencia muestra:
 
 ```txt
 Placeholder visual tipo foto segun categoria
+Boton iconografico de compartir
 Titulo
 Categoria
 Razon de recomendacion
 Fecha si aplica
 Distancia aproximada si hay ubicacion
-Acciones: Compartir, Ver detalle
 ```
+
+La tarjeta completa debe ser tappable y abrir el detalle de la idea. El boton de compartir vive como accion secundaria dentro de la tarjeta y no debe disparar la navegacion al detalle.
 
 Ejemplo:
 
@@ -229,8 +231,10 @@ Estado
 Fecha si aplica
 Ubicacion si aplica
 Link si aplica
-Acciones rapidas
+Boton Borrar
 ```
+
+La tarjeta completa abre el detalle de la idea. No debe necesitar un boton `Ver`. El borrado debe evitar navegacion accidental y pedir confirmacion.
 
 ## Pantalla: Detalle de Idea
 

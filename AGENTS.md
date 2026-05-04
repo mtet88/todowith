@@ -39,5 +39,6 @@
 ## Styling And Copy
 - Tailwind CSS v4 is wired through `src/app/globals.css` with `@import "tailwindcss"` and `postcss.config.mjs`; there is no Tailwind config file.
 - Build mobile-first: bottom tabs on mobile, sidebar/top navigation acceptable on desktop, global `+` save action should stay easy to access.
+- Hide mobile bottom nav and global `+` on focused flows such as `Guardar idea` and idea detail.
 - UI copy is Spanish and current source files use ASCII-only spellings such as `Que Hacemos`, `Manana`, and `Todavia`.
 - Do not edit generated files such as `.next/**` or `next-env.d.ts`.
