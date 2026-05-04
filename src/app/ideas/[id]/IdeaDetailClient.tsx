@@ -1,15 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
 import { CategoryBadge, StatusBadge } from "@/components/Badges";
 import { useLocalIdeas } from "@/hooks/useLocalIdeas";
 import { updateLocalIdea } from "@/lib/ideas/storage";
 import type { Idea, IdeaStatus } from "@/lib/ideas/types";
 
+const allowedReturnPaths = new Set(["/", "/ideas", "/account"]);
+
+function getSafeReturnPath(value: string | null) {
+  return value && allowedReturnPaths.has(value) ? value : "/ideas";
+}
+
 export function IdeaDetailClient({ id }: { id: string }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnPath = getSafeReturnPath(searchParams.get("from"));
   const { ideas, loaded } = useLocalIdeas();
   const idea = ideas.find((item) => item.id === id);
 
@@ -54,7 +62,7 @@ export function IdeaDetailClient({ id }: { id: string }) {
   return (
     <AppShell>
       <section className="mx-auto max-w-2xl">
-        <button className="text-sm font-bold text-stone-500" onClick={() => router.back()} type="button">
+        <button className="text-sm font-bold text-stone-500" onClick={() => router.push(returnPath)} type="button">
           <span aria-hidden="true">&lt;</span> Volver
         </button>
         <article className="mt-5 rounded-[2rem] bg-white p-6 shadow-sm md:p-8">

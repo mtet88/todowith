@@ -1,13 +1,21 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, Suspense, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
 import { addLocalIdea } from "@/lib/ideas/storage";
 
-export default function SaveIdeaPage() {
+const allowedReturnPaths = new Set(["/", "/ideas", "/account"]);
+
+function getSafeReturnPath(value: string | null) {
+  return value && allowedReturnPaths.has(value) ? value : "/";
+}
+
+function SaveIdeaContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnPath = getSafeReturnPath(searchParams.get("from"));
   const [rawText, setRawText] = useState("");
   const [link, setLink] = useState("");
   const [error, setError] = useState("");
@@ -46,7 +54,7 @@ export default function SaveIdeaPage() {
 
     try {
       const idea = addLocalIdea({ rawText: text, link: normalizeOptionalLink(link) });
-      router.push(`/ideas/${idea.id}`);
+      router.push(`/ideas/${idea.id}?from=${encodeURIComponent(returnPath)}`);
     } catch (cause) {
       console.error(cause);
       setError("No pude guardar la idea en este navegador. Prueba recargar e intentarlo otra vez.");
@@ -57,7 +65,7 @@ export default function SaveIdeaPage() {
   return (
     <AppShell>
       <section className="mx-auto max-w-2xl">
-        <Link className="text-sm font-bold text-stone-500" href="/">
+        <Link className="text-sm font-bold text-stone-500" href={returnPath}>
           <span aria-hidden="true">&lt;</span> Volver
         </Link>
         <div className="mt-5 rounded-[2rem] bg-white p-6 shadow-sm md:p-8">
@@ -96,5 +104,19 @@ export default function SaveIdeaPage() {
         </div>
       </section>
     </AppShell>
+  );
+}
+
+export default function SaveIdeaPage() {
+  return (
+    <Suspense
+      fallback={
+        <AppShell>
+          <p className="text-sm text-slate-500">Cargando...</p>
+        </AppShell>
+      }
+    >
+      <SaveIdeaContent />
+    </Suspense>
   );
 }

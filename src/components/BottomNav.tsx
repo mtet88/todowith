@@ -24,6 +24,10 @@ const items = [
 export function BottomNav() {
   const pathname = usePathname();
 
+  if (pathname === "/save" || pathname.startsWith("/ideas/")) {
+    return null;
+  }
+
   return (
     <nav className="fixed inset-x-0 bottom-4 z-40 px-4 pb-[env(safe-area-inset-bottom)] md:hidden">
       <div className="mx-auto flex max-w-md items-center justify-around rounded-full bg-white/95 px-4 py-3 shadow-2xl shadow-sky-900/10 ring-1 ring-slate-200/70 backdrop-blur">

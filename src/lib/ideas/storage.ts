@@ -88,6 +88,10 @@ export function updateLocalIdea(id: string, patch: Partial<Idea>) {
   saveLocalIdeas(updated);
 }
 
+export function deleteLocalIdea(id: string) {
+  saveLocalIdeas(getLocalIdeas().filter((idea) => idea.id !== id));
+}
+
 export function findLocalIdea(id: string) {
   return getLocalIdeas().find((idea) => idea.id === id);
 }
