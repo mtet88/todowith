@@ -10,7 +10,7 @@ La V1 valida el uso personal, pero debe estar preparada para grupos en el modelo
 
 ```txt
 Guardar primero, enriquecer despues.
-La pantalla principal es Que hacemos?, no una lista.
+La pantalla principal es Vamos!, no una lista.
 Todo se guarda como una Idea.
 La app debe funcionar sin IA obligatoria.
 La experiencia debe sentirse social aunque la V1 sea personal.
@@ -54,17 +54,17 @@ IA como dependencia critica
 La app tiene cuatro areas principales:
 
 ```txt
-Que hacemos?
+Vamos!
 Guardar idea
 Ideas
 Cuenta
 ```
 
-En mobile, `Que hacemos?`, `Ideas` y `Cuenta` viven en una bottom nav tipo pastilla flotante. `Guardar idea` vive como accion global `+` flotante. La bottom nav y el `+` se ocultan en flujos enfocados como `Guardar idea` y detalle de idea.
+En mobile, `Vamos!`, `Ideas` y `Cuenta` viven en una bottom nav tipo pastilla flotante. `Guardar idea` vive como accion global `+` flotante visible en `Vamos!` e `Ideas`. La bottom nav y el `+` se ocultan en flujos enfocados como `Guardar idea` y detalle de idea; el `+` tambien se oculta en `Cuenta`.
 
 En desktop, pueden vivir en sidebar o top navigation.
 
-## Pantalla: Que Hacemos?
+## Pantalla: Vamos!
 
 Esta es la pantalla inicial.
 
@@ -196,7 +196,9 @@ Ningun campo extra debe ser obligatorio.
 
 ### Objetivo
 
-Permitir revisar, filtrar y mantener la biblioteca de ideas.
+Permitir revisar, filtrar y mantener las ideas guardadas.
+
+El header de la pantalla muestra solo el titulo `Ideas`, sin eyebrow ni texto descriptivo adicional.
 
 ### Filtros
 
@@ -240,9 +242,9 @@ La tarjeta completa abre el detalle de la idea. No debe necesitar un boton `Ver`
 
 ### Objetivo
 
-Ver y editar todos los datos de una idea.
+Ver una idea sin entrar directamente al formulario de edicion. Desde el detalle, el usuario puede editar, compartir, borrar o cambiar estado.
 
-### Campos
+### Campos en Detalle
 
 ```txt
 Titulo
@@ -259,14 +261,67 @@ Ultima vez sugerida
 Fecha en que se hizo
 ```
 
-### Acciones
+En la vista de detalle, el estado no se muestra como badge superior. Se representa con controles de estado al final del contenido.
+
+### Edicion
+
+La tarjeta de idea y las sugerencias abren `/ideas/[id]` en modo detalle. El formulario de edicion se abre solo desde la accion `Editar`, usando el modo `?edit=1`.
+
+El formulario permite editar:
+
+```txt
+Titulo
+Categoria
+Estado
+Link
+Fecha
+Ubicacion
+Condiciones ideales
+Notas
+```
+
+La categoria y las condiciones ideales se sugieren automaticamente al crear una idea. Si el usuario las cambia en edicion, la decision manual se respeta y no se reclasifica automaticamente.
+
+### Acciones Flotantes de Detalle
+
+En detalle read-only hay un rail flotante fijo al costado derecho, centrado hacia el 70% de la altura de pantalla. Los botones tienen tamano tipo FAB y no se mueven con el scroll del contenido.
+
+```txt
+Compartir
+Editar
+Borrar definitivamente
+```
+
+`Borrar` elimina la idea de `localStorage` despues de confirmacion.
+
+### Acciones de Estado
+
+Debajo del contenido hay tres botones circulares horizontales:
+
+```txt
+Check -> Hecha
+Flecha circular -> Repetible
+X -> Descartada
+```
+
+Debajo de los botones se muestra el estado actual en mayusculas:
+
+```txt
+PENDIENTE
+HECHO
+REPETIBLE
+DESCARTADA
+```
+
+Cuando la idea esta pendiente, los tres botones estan en estado subtle. Cuando un estado se guarda correctamente, el boton correspondiente pasa a strong y el texto inferior cambia al nuevo estado.
+
+`Descartar` cambia `status = discarded`; no borra la idea.
+
+### Acciones de Edicion
 
 ```txt
 Guardar cambios
-Marcar como hecha
-Marcar como repetible
-Descartar
-Compartir
+Cancelar
 ```
 
 ## Pantalla: Cuenta
@@ -278,6 +333,8 @@ Permitir persistencia sin crear friccion inicial.
 ### Modo Invitado
 
 El usuario puede probar la app sin cuenta.
+
+La pantalla interna usa `Modo invitado` como titulo principal. `Cuenta` se mantiene solo como label de navegacion.
 
 Debe poder:
 
@@ -664,7 +721,7 @@ La V1 debe funcionar bien en mobile primero.
 Input de guardar accesible rapidamente
 Cards grandes para sugerencias
 Acciones faciles de tocar
-Compartir por WhatsApp prominente
+Compartir como accion iconografica secundaria
 ```
 
 ### Desktop
@@ -681,7 +738,7 @@ Panel lateral opcional para filtros
 ```txt
 Crear app
 Crear layout responsive
-Pantalla Que hacemos?
+Pantalla Vamos!
 Pantalla Guardar idea
 Guardar ideas localmente
 Pantalla Ideas
@@ -775,7 +832,7 @@ Se necesita job backend o basta con evaluar al consultar?
 Crear wireframes de baja fidelidad para:
 
 ```txt
-Que hacemos?
+Vamos!
 Guardar idea
 Ideas
 Detalle de idea

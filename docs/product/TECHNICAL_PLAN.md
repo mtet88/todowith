@@ -116,9 +116,9 @@ app/
 ### Rutas
 
 ```txt
-/                  Que hacemos?
+/                  Vamos!
 /save              Guardar idea
-/ideas             Biblioteca de ideas
+/ideas             Ideas
 /ideas/[id]        Detalle de idea
 /account           Cuenta/login
 /share/[token]     Vista publica compartida
@@ -172,6 +172,10 @@ lib/
     client.ts
     server.ts
 ```
+
+`StatusBadge` puede usarse en tarjetas o formularios, pero el detalle read-only no muestra el estado como badge superior. En esa vista el estado se controla con botones circulares y un label inferior.
+
+`FloatingSaveButton` se muestra en `/` e `/ideas`; se oculta en `/save`, `/account` y `/ideas/[id]`.
 
 ## Tipos Core
 
@@ -614,7 +618,7 @@ Detalle de idea
 Estados
 ```
 
-### Fase 2: Que Hacemos
+### Fase 2: Vamos!
 
 ```txt
 Date selector

@@ -21,7 +21,7 @@ Cuando llega el momento de decidir que hacer, muchas de esas ideas ya no estan p
 La app permite capturar rapidamente cualquier idea y despues responde la pregunta:
 
 ```txt
-Que hacemos?
+Vamos!
 ```
 
 Con sugerencias como:
@@ -255,9 +255,13 @@ Guardar primero, enriquecer despues.
 
 La captura nunca debe bloquearse porque la app no entendio una fecha, categoria o link.
 
+Al crear una idea, reglas simples proponen categoria y condiciones ideales. Esas sugerencias aparecen seleccionadas en edicion, pero el usuario puede cambiarlas. La app no debe reclasificar automaticamente una idea editada salvo que exista una accion explicita de reclasificar.
+
+Tocar una idea abre primero el detalle read-only. Desde ese detalle se puede entrar al formulario de edicion, compartir, borrar definitivamente o cambiar estado.
+
 ## Pantalla Principal
 
-La pantalla principal debe ser `Que hacemos?`, no una lista de ideas.
+La pantalla principal debe ser `Vamos!`, no una lista de ideas.
 
 La app debe abrir en el momento de valor: ayudar a decidir.
 
@@ -464,7 +468,7 @@ Alcance recomendado:
 
 ```txt
 Web app responsive
-Pantalla principal Que hacemos?
+Pantalla principal Vamos!
 Crear idea con texto libre obligatorio y link opcional
 Categorias: Comida, Sitios, Eventos, Planes, Otro
 Estados: Pendiente, Hecha, Repetible, Descartada
@@ -579,7 +583,7 @@ Mitigacion:
 
 ```txt
 Lenguaje social desde V1
-Pantalla principal Que hacemos?
+Pantalla principal Vamos!
 Compartir por WhatsApp/link
 Modelo de datos con group_id nullable
 ```
@@ -591,7 +595,7 @@ Objeto principal: Idea
 Vision: grupos de amigos
 V1: personal para validar
 Web app responsive
-Pantalla principal: Que hacemos?
+Pantalla principal: Vamos!
 Captura: texto libre obligatorio + link opcional
 Categorias: Comida, Sitios, Eventos, Planes, Otro
 Sin subcategorias en V1

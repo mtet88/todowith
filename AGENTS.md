@@ -3,7 +3,7 @@
 ## Product Direction
 - Product docs are source-of-truth context and live in `docs/product/`: `PRODUCT_PLAN.md`, `MVP_SPEC.md`, `TECHNICAL_PLAN.md`, and `WIREFRAMES.md`.
 - Core product rule: "Guardar primero, enriquecer despues"; creating an idea should only require free text plus optional link.
-- The home screen is `Que hacemos?`, not the ideas library.
+- The home screen is `Vamos!`, not the Ideas list.
 - V1 is local-first and personal, but data/model language should stay ready for future groups via nullable `groupId`.
 
 ## Next.js
@@ -40,5 +40,5 @@
 - Tailwind CSS v4 is wired through `src/app/globals.css` with `@import "tailwindcss"` and `postcss.config.mjs`; there is no Tailwind config file.
 - Build mobile-first: bottom tabs on mobile, sidebar/top navigation acceptable on desktop, global `+` save action should stay easy to access.
 - Hide mobile bottom nav and global `+` on focused flows such as `Guardar idea` and idea detail.
-- UI copy is Spanish and current source files use ASCII-only spellings such as `Que Hacemos`, `Manana`, and `Todavia`.
+- UI copy is Spanish and current source files use ASCII-only spellings such as `Vamos!`, `Manana`, and `Todavia`.
 - Do not edit generated files such as `.next/**` or `next-env.d.ts`.

@@ -10,8 +10,8 @@ Estos wireframes priorizan jerarquia, navegacion, contenido y acciones. No defin
 
 ```txt
 Mobile-first.
-La home es Que hacemos?, no la biblioteca.
-Guardar una idea debe estar siempre a un toque.
+La pantalla principal es Vamos!, no la lista de ideas.
+Guardar una idea debe estar a un toque en las superficies principales.
 El usuario puede probar sin login.
 Cada sugerencia debe explicar por que aparece.
 La edicion avanzada ocurre despues de guardar.
@@ -22,7 +22,7 @@ La edicion avanzada ocurre despues de guardar.
 ### Bottom Tabs
 
 ```txt
-( Que hacemos )   Ideas   Cuenta
+( Vamos! )   Ideas   Cuenta
 ```
 
 La bottom nav mobile se presenta como una pastilla flotante con todas las esquinas redondeadas. El tab activo usa una pastilla oscura con icono y texto.
@@ -38,8 +38,8 @@ El FAB abre la pantalla o modal de `Guardar idea`.
 Reglas:
 
 ```txt
-Visible en Que hacemos?, Ideas y Cuenta.
-Puede ocultarse en Detalle de idea, Guardar idea y Compartir.
+Visible en Vamos! e Ideas.
+Se oculta en Cuenta, Detalle de idea, Guardar idea y Compartir.
 Debe estar optimizado para uso con una mano.
 ```
 
@@ -53,7 +53,7 @@ Opcion sugerida:
 
 ```txt
 Sidebar izquierda:
-- Que hacemos?
+- Vamos!
 - Ideas
 - Cuenta
 
@@ -63,7 +63,7 @@ Boton destacado:
 
 El contenido principal usa mayor ancho para mostrar sugerencias y paneles secundarios.
 
-## Screen: Que Hacemos?
+## Screen: Vamos!
 
 ### Objetivo
 
@@ -83,7 +83,7 @@ Ayudar al usuario a decidir que hacer en una fecha o momento especifico.
 │                             │
 ├─────────────────────────────┤
 │ FAB: +                      │
-│ Tabs: Que hacemos Ideas Cta │
+│ Tabs: Vamos! Ideas Cta       │
 └─────────────────────────────┘
 ```
 
@@ -110,7 +110,7 @@ La categoria usa un badge claro/palido sobre la imagen. El boton superior derech
 ```txt
 ┌──────────────┬────────────────────────────────────────┐
 │ Sidebar      │ Cuando: [Hoy v]                        │
-│ Que hacemos  │                                        │
+│ Vamos!       │                                        │
 │ Ideas        │ Clima: 22 C · Sin lluvia                │
 │ Cuenta       │                                        │
 │ + Guardar    │                                        │
@@ -251,14 +251,13 @@ Guardar cambios
 
 ### Objetivo
 
-Revisar y mantener la biblioteca de ideas.
+Revisar y mantener las ideas guardadas.
 
 ### Mobile Layout
 
 ```txt
 ┌─────────────────────────────┐
 │ Ideas                       │
-│ Tu backlog de cosas por hacer│
 ├─────────────────────────────┤
 │ Estados                     │
 │ [Todas] [Pendientes]        │
@@ -282,7 +281,7 @@ Revisar y mantener la biblioteca de ideas.
 │ │ [Borrar]                │ │
 │ └─────────────────────────┘ │
 ├─────────────────────────────┤
-│ Tabs: Que hacemos Ideas Cta │
+│ Tabs: Vamos! Ideas Cta       │
 │ FAB: +                      │
 └─────────────────────────────┘
 ```
@@ -317,8 +316,11 @@ Ver y editar todos los datos de una idea.
 ```txt
 ┌─────────────────────────────┐
 │ < Ideas                     │
+│                      [↥]    │
+│                      [✎]    │
+│                      [del]  │
 │ Restaurante coreano         │
-│ Comida · Pendiente          │
+│ Comida                      │
 ├─────────────────────────────┤
 │ Texto original              │
 │ Restaurante coreano que vi  │
@@ -329,11 +331,9 @@ Ver y editar todos los datos de una idea.
 ├─────────────────────────────┤
 │ Fecha                       │
 │ Sin fecha                   │
-│ [Editar]                    │
 ├─────────────────────────────┤
 │ Ubicacion                   │
-│ [Mapa / pin]                │
-│ [Cambiar ubicacion]         │
+│ Sin ubicacion todavia       │
 ├─────────────────────────────┤
 │ Condiciones ideales         │
 │ [Noche] [Fin de semana]     │
@@ -341,23 +341,24 @@ Ver y editar todos los datos de una idea.
 │ Notas                       │
 │ Opcional                    │
 ├─────────────────────────────┤
-│ Acciones                    │
-│ [Compartir]                 │
-│ [Marcar hecha]              │
-│ [Marcar repetible]          │
-│ [Descartar]                 │
+│      (✓)   (↻)   (×)        │
+│          PENDIENTE          │
 └─────────────────────────────┘
 ```
+
+El rail derecho de acciones es flotante y fijo al viewport: compartir, editar y borrar definitivamente. No se mueve con el scroll del contenido.
+
+Tocar una idea abre este detalle read-only. El formulario de edicion solo aparece al tocar el boton flotante de lapiz.
 
 ### Desktop Layout
 
 ```txt
 ┌──────────────┬───────────────────────┬─────────────────┐
-│ Sidebar      │ Detalle               │ Acciones         │
+│ Sidebar      │ Detalle               │ Rail flotante    │
 │              │ Titulo                │ Compartir        │
-│              │ Campos editables      │ Hecha            │
-│              │ Mapa                  │ Repetible        │
-│              │ Notas                 │ Descartar        │
+│              │ Campos read-only      │ Editar           │
+│              │ Estado circular       │ Borrar           │
+│              │ Notas                 │                 │
 └──────────────┴───────────────────────┴─────────────────┘
 ```
 
@@ -365,13 +366,15 @@ Ver y editar todos los datos de una idea.
 
 ```txt
 Volver
-Editar campos
-Guardar cambios
-Compartir
-Marcar como Hecha
-Marcar como Repetible
-Descartar
+Compartir desde rail flotante
+Editar desde rail flotante
+Borrar definitivamente desde rail flotante
+Marcar como Hecha con boton circular
+Marcar como Repetible con boton circular
+Descartar con boton circular
 ```
+
+`Descartar` cambia el estado de la idea. `Borrar` elimina definitivamente la idea local tras confirmacion.
 
 ## Screen: Compartir
 
@@ -434,8 +437,7 @@ Permitir persistencia sin bloquear el primer uso.
 
 ```txt
 ┌─────────────────────────────┐
-│ Cuenta                      │
-│ Estas usando modo invitado. │
+│ Modo invitado               │
 ├─────────────────────────────┤
 │ Guarda tus ideas para no    │
 │ perderlas si cambias de     │
@@ -469,7 +471,7 @@ Permitir persistencia sin bloquear el primer uso.
 
 ```txt
 ┌─────────────────────────────┐
-│ Cuenta                      │
+│ Sesion                      │
 │ Nombre / email              │
 ├─────────────────────────────┤
 │ Ideas guardadas             │
@@ -522,14 +524,14 @@ Quitar ubicacion
 ## Flujo Principal: Crear y Sugerir
 
 ```txt
-1. Usuario entra a Que hacemos?.
+1. Usuario entra a Vamos!.
 2. Toca +.
 3. Escribe: Picnic en el parque cuando haga buen clima.
 4. Opcionalmente agrega link.
 5. Toca Guardar idea.
 6. La app clasifica como Planes y sugiere condicion Buen clima.
 7. Usuario toca Listo.
-8. Otro dia entra a Que hacemos?.
+8. Otro dia entra a Vamos!.
 9. Selecciona Este finde.
 10. La app revisa clima y scoring.
 11. Sugiere Picnic en el parque con razon.
@@ -556,7 +558,7 @@ IdeaCard
 SuggestionCard
 DateSelector
 FilterChips
-StatusBadge
+StatusBadge (no se usa en el top del detalle read-only)
 CategoryBadge
 WeatherSummary
 ShareSheet
@@ -573,7 +575,7 @@ LoginPrompt
 +
 ```
 
-### Accion Primaria en Home
+### Accion Primaria en Vamos!
 
 ```txt
 Selector Cuando
@@ -593,10 +595,10 @@ Ver detalle
 
 ## Copy Base
 
-### Home
+### Vamos!
 
 ```txt
-Que hacemos?
+Vamos!
 Elige cuando y te sugerimos ideas guardadas que tienen sentido.
 ```
 
@@ -623,9 +625,9 @@ Guarda cosas que algun dia quieras hacer con amigos.
 ## Decisiones Cerradas
 
 ```txt
-Mobile usa bottom tabs: Que hacemos, Ideas, Cuenta.
-Guardar idea vive como FAB global.
-Que hacemos es la pantalla inicial.
+Mobile usa bottom tabs: Vamos!, Ideas, Cuenta.
+Guardar idea vive como FAB global en Vamos! e Ideas.
+Vamos! es la pantalla inicial.
 Cards de sugerencia deben incluir razon.
 Login no bloquea primer uso.
 Detalle avanzado ocurre despues de guardar.
