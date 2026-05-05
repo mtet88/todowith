@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 
 export function FloatingSaveButton() {
   const pathname = usePathname();
-  const allowedFrom = pathname === "/" || pathname === "/ideas" || pathname === "/account" ? pathname : "/";
+  const allowedFrom = pathname === "/" || pathname === "/ideas" ? pathname : "/";
 
-  if (pathname === "/save" || pathname.startsWith("/ideas/")) {
+  if (pathname === "/save" || pathname === "/account" || pathname.startsWith("/ideas/")) {
     return null;
   }
 

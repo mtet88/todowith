@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Que Hacemos",
+  title: "Vamos!",
   description: "Guarda ideas de planes y recibelas cuando tiene sentido hacerlas.",
 };
 

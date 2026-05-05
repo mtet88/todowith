@@ -9,12 +9,12 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="mx-auto flex min-h-dvh w-full max-w-6xl">
         <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r border-slate-200/70 bg-white/75 p-6 shadow-xl shadow-sky-900/5 backdrop-blur md:flex">
           <Link className="text-xl font-black tracking-tight" href="/">
-            Que Hacemos
+            Vamos!
           </Link>
           <p className="mt-2 text-sm leading-6 text-slate-500">Ideas guardadas para cuando toque decidir.</p>
           <nav className="mt-10 grid gap-2">
             <Link className="rounded-2xl px-4 py-3 font-semibold text-slate-700 hover:bg-white hover:text-slate-950" href="/">
-              Que hacemos?
+              Vamos!
             </Link>
             <Link className="rounded-2xl px-4 py-3 font-semibold text-slate-700 hover:bg-white hover:text-slate-950" href="/ideas">
               Ideas

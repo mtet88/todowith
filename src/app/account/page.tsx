@@ -4,8 +4,7 @@ export default function AccountPage() {
   return (
     <AppShell>
       <section className="mx-auto max-w-2xl">
-        <p className="text-sm font-semibold text-amber-700">Cuenta</p>
-        <h1 className="mt-2 text-4xl font-black tracking-tight">Modo invitado</h1>
+        <h1 className="text-4xl font-black tracking-tight">Modo invitado</h1>
         <div className="mt-6 rounded-[2rem] bg-white p-6 shadow-sm">
           <p className="text-sm leading-6 text-stone-600">
             Por ahora tus ideas se guardan en este navegador con localStorage. El login con Google/email y la migracion a Supabase vendran despues de validar el flujo local.

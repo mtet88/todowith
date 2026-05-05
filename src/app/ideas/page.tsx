@@ -11,9 +11,7 @@ export default function IdeasPage() {
   return (
     <AppShell>
       <section className="mx-auto max-w-3xl">
-        <p className="text-sm font-semibold text-amber-700">Biblioteca</p>
-        <h1 className="mt-2 text-4xl font-black tracking-tight">Ideas</h1>
-        <p className="mt-3 text-sm leading-6 text-stone-500">Tu backlog de cosas para hacer con amigos.</p>
+        <h1 className="text-4xl font-black tracking-tight">Ideas</h1>
 
         <div className="mt-6 flex gap-2 overflow-x-auto pb-2">
           {['Todas', 'Pendientes', 'Repetibles', 'Hechas', 'Descartadas'].map((filter) => (
