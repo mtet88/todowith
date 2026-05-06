@@ -199,7 +199,7 @@ function HomeContent() {
 
           {loaded && suggestions.length > 0 ? (
             <div>
-              <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-8 pt-4 md:mx-0 md:px-1">
+              <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-28 pt-4 md:mx-0 md:px-1 md:pb-8">
                 {suggestions.map(({ idea, reasons }) => {
                   const visual = visualStyles[idea.category];
                   const isDemo = idea.id.startsWith("demo-");
@@ -217,7 +217,7 @@ function HomeContent() {
                     }
                   }
 
-                  function handleShare(event: MouseEvent<HTMLAnchorElement>) {
+                  function handleSecondaryAction(event: MouseEvent<HTMLAnchorElement>) {
                     event.stopPropagation();
                   }
 
@@ -230,26 +230,43 @@ function HomeContent() {
                       role="link"
                       tabIndex={0}
                     >
-                      <div className={`relative min-h-56 bg-gradient-to-br ${visual.background} p-5`}>
+                      <div className={`relative h-64 bg-gradient-to-br ${visual.background} md:h-72`}>
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.75),transparent_28%),radial-gradient(circle_at_80%_10%,rgba(255,255,255,0.4),transparent_24%),linear-gradient(135deg,rgba(255,255,255,0.2),transparent)]" />
-                        <div className="relative flex items-start justify-between gap-3">
-                          <span className="rounded-full bg-white/70 px-3 py-1 text-xs font-black text-slate-700 shadow-sm ring-1 ring-white/80 backdrop-blur">
+                        <div className="absolute left-5 top-5 z-10">
+                          <span className="inline-flex rounded-full bg-white/70 px-3 py-1 text-xs font-black text-slate-700 shadow-sm ring-1 ring-white/80 backdrop-blur">
                             {categoryLabels[idea.category]}
                           </span>
-                          <a
-                            aria-label={`Compartir ${idea.title}`}
-                            className="grid size-8 place-items-center rounded-full bg-slate-950 text-white shadow-lg shadow-slate-900/15 transition hover:bg-slate-800"
-                            href={shareHref}
-                            onClick={handleShare}
-                            rel="noreferrer"
-                            target="_blank"
-                          >
-                            <svg className="size-4" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                              <path d="M12 3v11M8 7l4-4 4 4M6 12v7h12v-7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-                            </svg>
-                          </a>
                         </div>
-                        <div className="relative mt-10 grid place-items-center">
+                        <div className="absolute right-5 top-5 z-10 grid gap-2">
+                            <a
+                              aria-label={`Compartir ${idea.title}`}
+                              className="grid size-8 place-items-center rounded-full bg-slate-950 text-white shadow-lg shadow-slate-900/15 transition hover:bg-slate-800"
+                              href={shareHref}
+                              onClick={handleSecondaryAction}
+                              rel="noreferrer"
+                              target="_blank"
+                            >
+                              <svg className="size-4" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 3v11M8 7l4-4 4 4M6 12v7h12v-7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                              </svg>
+                            </a>
+                            {idea.link ? (
+                              <a
+                                aria-label={`Abrir link de ${idea.title}`}
+                                className="grid size-8 place-items-center rounded-full bg-slate-950 text-white shadow-lg shadow-slate-900/15 transition hover:bg-slate-800"
+                                href={idea.link}
+                                onClick={handleSecondaryAction}
+                                rel="noreferrer"
+                                target="_blank"
+                              >
+                                <svg className="size-4" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                  <path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L11 4.93" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                                  <path d="M14 11a5 5 0 0 0-7.07 0L4.81 13.12a5 5 0 0 0 7.07 7.07L13 19.07" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                                </svg>
+                              </a>
+                            ) : null}
+                        </div>
+                        <div className="absolute inset-0 grid place-items-center">
                           <div className="grid size-28 place-items-center rounded-[2rem] bg-white/55 shadow-inner ring-1 ring-white/70 backdrop-blur">
                             <svg className="size-16 text-slate-950/70" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                               <path d={visual.icon} />
@@ -257,9 +274,9 @@ function HomeContent() {
                           </div>
                         </div>
                       </div>
-                      <div className="p-5">
-                        <h3 className="text-xl font-black tracking-tight text-slate-950">{idea.title}</h3>
-                        <p className="mt-2 min-h-12 text-sm leading-6 text-slate-500">{reasons[0]}</p>
+                      <div className="flex h-40 flex-col p-5 md:h-44">
+                        <h3 className="line-clamp-2 text-xl font-black tracking-tight text-slate-950">{idea.title}</h3>
+                        <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-500">{reasons[0]}</p>
                       </div>
                     </article>
                   );
