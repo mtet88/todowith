@@ -1,4 +1,5 @@
 import { classifyIdea } from "./classify";
+import { expirePastIdeas } from "./expiration";
 import type { Idea, IdeaInput } from "./types";
 
 const STORAGE_KEY = "ideas:v1";
@@ -19,6 +20,10 @@ function createId() {
   return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
+function persistRawIdeas(ideas: Idea[]) {
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(ideas));
+}
+
 export function getLocalIdeas(): Idea[] {
   if (typeof window === "undefined") {
     return [];
@@ -32,14 +37,24 @@ export function getLocalIdeas(): Idea[] {
 
   try {
     const parsed = JSON.parse(raw) as Idea[];
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    const expired = expirePastIdeas(parsed);
+
+    if (expired.changed) {
+      persistRawIdeas(expired.ideas);
+    }
+
+    return expired.ideas;
   } catch {
     return [];
   }
 }
 
 export function saveLocalIdeas(ideas: Idea[]) {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(ideas));
+  persistRawIdeas(ideas);
 
   try {
     window.dispatchEvent(new Event("ideas:changed"));

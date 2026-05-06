@@ -3,7 +3,7 @@
 import { KeyboardEvent, MouseEvent, Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
-import { getSuggestions } from "@/lib/ideas/scoring";
+import { getSuggestions, type SuggestionMoment } from "@/lib/ideas/scoring";
 import { categoryLabels, type Idea, type IdeaCategory } from "@/lib/ideas/types";
 import { useLocalIdeas } from "@/hooks/useLocalIdeas";
 
@@ -30,7 +30,30 @@ const visualStyles: Record<IdeaCategory, { background: string; icon: string }> =
   },
 };
 
-const whenOptions = ["Hoy", "Manana", "Fin de semana", "Fecha"];
+const whenOptions: Array<{ label: string; value: SuggestionMoment }> = [
+  { label: "Hoy", value: "today" },
+  { label: "Mañana", value: "tomorrow" },
+  { label: "Fin de semana", value: "weekend" },
+  { label: "Fecha", value: "date" },
+];
+
+function getDateInputValue(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function parseDateInput(value: string) {
+  const [year, month, day] = value.split("-").map(Number);
+
+  if (!year || !month || !day) {
+    return new Date();
+  }
+
+  return new Date(year, month - 1, day);
+}
 
 const demoIdeas: Idea[] = [
   {
@@ -90,11 +113,15 @@ function HomeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedWhen, setSelectedWhen] = useState(whenOptions[0]);
+  const [selectedDate, setSelectedDate] = useState(getDateInputValue);
   const [whenOpen, setWhenOpen] = useState(false);
   const { ideas, loaded } = useLocalIdeas();
   const showDemo = searchParams.get("demo") === "1";
   const activeIdeas = loaded && showDemo && ideas.length === 0 ? demoIdeas : ideas;
-  const suggestions = getSuggestions(activeIdeas);
+  const suggestions = getSuggestions(activeIdeas, {
+    moment: selectedWhen.value,
+    targetDate: parseDateInput(selectedDate),
+  });
 
   return (
     <AppShell>
@@ -108,7 +135,7 @@ function HomeContent() {
               onClick={() => setWhenOpen((open) => !open)}
               type="button"
             >
-              {selectedWhen}
+              {selectedWhen.label}
               <svg className="size-5 text-emerald-400" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m7 10 5 5 5-5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" />
               </svg>
@@ -118,21 +145,32 @@ function HomeContent() {
                 {whenOptions.map((option) => (
                   <button
                     className={`w-full rounded-2xl px-4 py-3 text-left text-sm font-black transition ${
-                      option === selectedWhen ? "bg-emerald-100 text-emerald-800" : "hover:bg-slate-100"
+                      option.value === selectedWhen.value ? "bg-emerald-100 text-emerald-800" : "hover:bg-slate-100"
                     }`}
-                    key={option}
+                    key={option.value}
                     onClick={() => {
                       setSelectedWhen(option);
                       setWhenOpen(false);
                     }}
                     type="button"
                   >
-                    {option}
+                    {option.label}
                   </button>
                 ))}
               </div>
             ) : null}
           </div>
+          {selectedWhen.value === "date" ? (
+            <label className="mt-4 inline-grid gap-2 text-sm font-bold text-slate-700">
+              Elige fecha
+              <input
+                className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base font-bold text-slate-950 outline-none ring-emerald-200 transition focus:ring-4"
+                onChange={(event) => setSelectedDate(event.target.value)}
+                type="date"
+                value={selectedDate}
+              />
+            </label>
+          ) : null}
         </div>
 
         <div className="flex flex-1 flex-col justify-center pb-12">
